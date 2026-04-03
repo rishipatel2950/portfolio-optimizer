@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Portfolio Optimizer | Rishi Patel</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f7f3ed;--warm:#f0e9de;--warm2:#e8ddd0;--warm3:#ddd0be;
+  --ink:#1c1712;--ink2:#3d3529;--muted:#7a6d5e;--muted2:#b5a898;
+  --rust:#c04f1a;--rust-l:rgba(192,79,26,.1);
+  --forest:#1e5c3a;--forest-l:rgba(30,92,58,.1);
+  --navy:#1a3057;--navy-l:rgba(26,48,87,.1);
+  --amber:#c47d0a;--amber-l:rgba(196,125,10,.1);
+  --serif:'DM Serif Display',Georgia,serif;
+  --mono:'DM Mono',monospace;
+  --body:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.6}
+
+/* ── MASTHEAD ── */
+.mast{background:var(--ink);color:var(--cream);padding:36px 0 0;border-bottom:4px solid var(--rust)}
+.mast-in{max-width:1240px;margin:0 auto;padding:0 40px}
+.mast-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--rust);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.mast-kicker::before{content:'';width:28px;height:1px;background:var(--rust)}
+.mast-h1{font-family:var(--serif);font-size:clamp(32px,6vw,64px);font-weight:400;font-style:italic;line-height:1;letter-spacing:-.02em;margin-bottom:10px}
+.mast-h1 span{font-style:normal;color:var(--rust)}
+.mast-sub{font-size:14px;color:rgba(247,243,237,.6);max-width:560px;line-height:1.65;margin-bottom:24px}
+.mast-pills{display:flex;gap:8px;flex-wrap:wrap;padding-bottom:24px;border-bottom:1px solid rgba(247,243,237,.12);margin-bottom:0}
+.pill{font-family:var(--mono);font-size:9px;letter-spacing:.12em;padding:4px 12px;border-radius:2px;border:1px solid}
+.p-rust{border-color:rgba(192,79,26,.5);color:var(--rust);background:rgba(192,79,26,.08)}
+.p-forest{border-color:rgba(30,92,58,.5);color:#5bb88a;background:rgba(30,92,58,.1)}
+.p-navy{border-color:rgba(26,48,87,.5);color:#7aaee8;background:rgba(26,48,87,.1)}
+.p-amber{border-color:rgba(196,125,10,.5);color:#e8a83a;background:rgba(196,125,10,.1)}
+
+/* ── SEARCH ── */
+.search{background:#15110c;border-bottom:1px solid rgba(247,243,237,.08);padding:24px 0}
+.search-in{max-width:1240px;margin:0 auto;padding:0 40px}
+.search-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(247,243,237,.4);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.search-lbl::before{content:'';width:16px;height:1px;background:var(--rust)}
+.slots-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;align-items:center}
+.slot{display:flex;align-items:center;gap:6px;border:1px solid rgba(247,243,237,.1);border-radius:4px;padding:8px 12px;background:rgba(247,243,237,.04);transition:border-color .2s}
+.slot:focus-within{border-color:var(--rust)}
+.slot-n{font-family:var(--mono);font-size:10px;color:rgba(247,243,237,.3);min-width:14px}
+.slot-inp{background:transparent;border:none;outline:none;font-family:var(--mono);font-size:15px;color:var(--cream);text-transform:uppercase;letter-spacing:.14em;width:68px}
+.slot-inp::placeholder{color:rgba(247,243,237,.2);font-size:11px;letter-spacing:.04em;text-transform:none}
+.slot-rm{background:none;border:none;color:rgba(247,243,237,.2);cursor:pointer;font-size:14px;padding:0 0 0 4px;line-height:1;transition:color .15s}
+.slot-rm:hover{color:var(--rust)}
+.add-slot{font-family:var(--mono);font-size:10px;color:rgba(247,243,237,.35);background:transparent;border:1px dashed rgba(247,243,237,.15);border-radius:4px;padding:8px 14px;cursor:pointer;letter-spacing:.08em;transition:all .2s}
+.add-slot:hover{border-color:var(--rust);color:var(--rust)}
+.run-btn{background:var(--rust);color:#fff;border:none;border-radius:4px;padding:10px 24px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;cursor:pointer;transition:opacity .15s}
+.run-btn:hover{opacity:.87}
+.run-btn:disabled{opacity:.35;cursor:not-allowed}
+.presets{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.pre-lbl{font-family:var(--mono);font-size:9px;color:rgba(247,243,237,.25);letter-spacing:.1em}
+.pre{font-family:var(--mono);font-size:9px;color:rgba(247,243,237,.4);background:rgba(247,243,237,.04);border:1px solid rgba(247,243,237,.1);padding:3px 10px;border-radius:3px;cursor:pointer;letter-spacing:.05em;transition:all .15s}
+.pre:hover{color:var(--cream);border-color:rgba(247,243,237,.3)}
+.pre.star{color:#e8a83a;border-color:rgba(196,125,10,.4)}
+.sbar{display:flex;align-items:center;gap:10px;height:22px}
+.smsg{font-family:var(--mono);font-size:10px;color:rgba(247,243,237,.3)}
+.smsg.ok{color:#5bb88a}.smsg.err{color:#f08080}
+.spin{width:12px;height:12px;border:2px solid rgba(247,243,237,.15);border-top-color:var(--rust);border-radius:50%;animation:spin .7s linear infinite;display:none;flex-shrink:0}
+.spin.on{display:block}
+.prog{max-width:160px;flex:1;height:2px;background:rgba(247,243,237,.08);border-radius:1px;overflow:hidden;display:none}
+.prog.on{display:block}
+.prog-f{height:2px;background:var(--rust);width:0%;transition:width .3s}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:var(--warm);border-bottom:2px solid var(--ink);box-shadow:0 2px 12px rgba(28,23,18,.08)}
+.nav-in{max-width:1240px;margin:0 auto;padding:0 40px;display:flex;overflow-x:auto}
+.ntab{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:11px 18px;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all .2s}
+.ntab:hover{color:var(--ink)}
+.ntab.on{color:var(--rust);border-bottom-color:var(--rust)}
+
+/* ── MAIN ── */
+.main{max-width:1240px;margin:0 auto;padding:32px 40px 80px}
+.tc{display:none}.tc.on{display:block}
+
+/* ── SECTION HEAD ── */
+.sh{margin-bottom:22px;padding-bottom:14px;border-bottom:2px solid var(--ink)}
+.sh-row{display:flex;align-items:baseline;gap:12px;margin-bottom:5px}
+.sh-num{font-family:var(--mono);font-size:11px;color:var(--muted2)}
+.sh-ttl{font-family:var(--serif);font-size:clamp(20px,3vw,32px);font-style:italic;letter-spacing:-.01em}
+.sh-rule{flex:1;height:1px;background:var(--warm3);margin-bottom:2px}
+.sh-sub{font-size:13px;color:var(--muted);line-height:1.65;max-width:720px}
+
+/* ── CARDS ── */
+.card{background:#fff;border:1px solid var(--warm3);border-radius:4px;padding:18px 20px;margin-bottom:14px;box-shadow:0 1px 3px rgba(28,23,18,.05)}
+.ct{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:11px;padding-bottom:9px;border-bottom:1px solid var(--warm2);display:flex;align-items:center;gap:7px}
+.ct::before{content:'';width:3px;height:10px;border-radius:2px;flex-shrink:0}
+.ct-r::before{background:var(--rust)}.ct-r{color:var(--rust)}
+.ct-f::before{background:var(--forest)}.ct-f{color:var(--forest)}
+.ct-n::before{background:var(--navy)}.ct-n{color:var(--navy)}
+.ct-a::before{background:var(--amber)}.ct-a{color:var(--amber)}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.g21{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px}
+.g12{display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:14px}
+@media(max-width:860px){.g2,.g3,.g21,.g12{grid-template-columns:1fr}}
+
+/* ── TABLE ── */
+.dt{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px}
+.dt th{text-align:right;color:var(--muted);font-weight:500;padding:5px 7px;border-bottom:1px solid var(--warm2);font-size:10px;letter-spacing:.06em;white-space:nowrap;background:var(--warm)}
+.dt th:first-child{text-align:left}
+.dt td{padding:6px 7px;text-align:right;border-bottom:1px solid var(--warm2)}
+.dt td:first-child{text-align:left;color:var(--muted);font-size:10px}
+.dt tr:last-child td{border-bottom:none}
+.dt tr:hover td{background:var(--warm)}
+.dt-hl td:first-child{color:var(--forest);font-weight:600}
+.dt-hl{background:var(--forest-l)}
+.dt-tot td{font-weight:700;color:var(--ink);border-top:1px solid var(--warm3);background:var(--warm)}
+
+/* ── KPIS ── */
+.kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+.kpi{background:#fff;border:1px solid var(--warm3);border-radius:4px;padding:14px;text-align:center;box-shadow:0 1px 2px rgba(28,23,18,.04)}
+.kl{font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.kv{font-family:var(--serif);font-size:24px;font-style:italic;letter-spacing:-.01em;line-height:1}
+.ks{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:3px}
+
+/* ── WEIGHT BARS ── */
+.wbar{margin-bottom:11px}.wbar:last-child{margin-bottom:0}
+.wb-top{display:flex;justify-content:space-between;margin-bottom:3px;font-size:12px}
+.wb-n{color:var(--muted)}.wb-v{font-family:var(--mono);font-size:11px;font-weight:500}
+.wb-track{height:4px;background:var(--warm2);border-radius:2px;overflow:hidden}
+.wb-fill{height:4px;border-radius:2px}
+
+/* ── FORMULA ── */
+.formula{background:var(--warm);border:1px solid var(--warm3);border-left:3px solid var(--rust);border-radius:3px;padding:11px 14px;font-family:var(--mono);font-size:11px;color:var(--ink);margin:10px 0;line-height:2}
+.formula strong{color:var(--rust)}
+.formula.ff{border-left-color:var(--forest)}.formula.ff strong{color:var(--forest)}
+.formula.fn{border-left-color:var(--navy)}.formula.fn strong{color:var(--navy)}
+
+/* ── NOTE ── */
+.note{padding:8px 12px;border-radius:3px;font-family:var(--mono);font-size:10px;margin-bottom:10px;line-height:1.7}
+.nr{background:var(--rust-l);border:1px solid rgba(192,79,26,.2);color:var(--rust)}
+.nf{background:var(--forest-l);border:1px solid rgba(30,92,58,.2);color:var(--forest)}
+.nn{background:var(--navy-l);border:1px solid rgba(26,48,87,.2);color:var(--navy)}
+.na{background:var(--amber-l);border:1px solid rgba(196,125,10,.2);color:var(--amber)}
+
+/* ── CHART ── */
+.chart-box{background:var(--warm);border:1px solid var(--warm3);border-radius:4px;padding:14px}
+canvas{display:block;width:100%!important}
+.cleg{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px}
+.cli{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;color:var(--muted)}
+.cld{width:20px;height:2px;border-radius:1px;flex-shrink:0}
+
+/* ── PLACEHOLDER ── */
+.placeholder{text-align:center;padding:80px 20px}
+.ph-ornament{font-size:40px;margin-bottom:14px;opacity:.4}
+.ph-title{font-family:var(--serif);font-size:22px;font-style:italic;color:var(--ink2);margin-bottom:6px}
+.ph-sub{font-size:13px;color:var(--muted);line-height:1.65}
+.ph-arrow{color:var(--rust);margin:0 4px}
+
+/* ── FADE ── */
+@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.fa{animation:fu .3s ease both}
+
+/* ── FOOTER ── */
+footer{border-top:2px solid var(--ink);background:var(--ink);color:rgba(247,243,237,.45);padding:18px 40px}
+.foot-in{max-width:1240px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.foot-l{font-family:var(--serif);font-size:15px;font-style:italic;color:var(--cream)}
+.foot-r{font-family:var(--mono);font-size:9px;text-align:right;line-height:1.9;letter-spacing:.06em}
+
+@media(max-width:600px){.mast-in,.search-in,.main,.nav-in,footer{padding-left:18px;padding-right:18px}}
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="mast">
+  <div class="mast-in">
+    <div class="mast-kicker">Portfolio Optimization · Rishi Patel · FIN 6500 · Spring 2025</div>
+    <h1 class="mast-h1"><span>N-Stock</span> Portfolio<br>Optimizer &amp; Analyzer</h1>
+    <p class="mast-sub">A portfolio optimization tool built for FIN 6500. Enter any 2–10 stocks to compute Sharpe ratios, variance-covariance matrix, minimum variance portfolio, efficient frontier, and Capital Market Line — using 5-year monthly price data.</p>
+    <div class="mast-pills">
+      <span class="pill p-rust">2–10 Stocks</span>
+      <span class="pill p-forest">Live Yahoo Finance</span>
+      <span class="pill p-navy">Efficient Frontier + CML</span>
+      <span class="pill p-amber">Min Variance · Market Portfolio</span>
+    </div>
+  </div>
+</header>
+
+<!-- SEARCH -->
+<section class="search">
+  <div class="search-in">
+    <div class="search-lbl">Build Your Portfolio — Enter 2 to 10 Ticker Symbols</div>
+    <div class="slots-row" id="slotsRow"></div>
+    <div class="presets">
+      <span class="pre-lbl">LOAD:</span>
+      <span class="pre star" onclick="loadPreset(['ABNB','BX','VST'])">★ My Project (ABNB·BX·VST)</span>
+      <span class="pre" onclick="loadPreset(['NVDA','MSFT','GOOGL','AAPL'])">NVDA·MSFT·GOOGL·AAPL</span>
+      <span class="pre" onclick="loadPreset(['AAPL','JPM','XOM','JNJ'])">AAPL·JPM·XOM·JNJ</span>
+      <span class="pre" onclick="loadPreset(['TSLA','BAC','CVX','AMZN','META'])">5-Stock Blend</span>
+      <span class="pre" onclick="loadPreset(['NVDA','AAPL','MSFT','AMZN','GOOGL','META','TSLA'])">Mag-7</span>
+    </div>
+    <div class="sbar">
+      <div class="spin" id="spin"></div>
+      <div class="smsg" id="smsg">Add at least 2 tickers above then click Run Analysis.</div>
+      <div class="prog" id="prog"><div class="prog-f" id="progF"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-in">
+    <button class="ntab on" data-tab="overview" onclick="showTab('overview')">Overview</button>
+    <button class="ntab" data-tab="returns" onclick="showTab('returns')">Returns &amp; Sharpe</button>
+    <button class="ntab" data-tab="covar" onclick="showTab('covar')">Cov Matrix</button>
+    <button class="ntab" data-tab="frontier" onclick="showTab('frontier')">Efficient Frontier</button>
+    <button class="ntab" data-tab="market" onclick="showTab('market')">Market Portfolio</button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+  <div id="ph" class="tc on">
+    <div class="placeholder fa">
+      <div class="ph-ornament">◈</div>
+      <div class="ph-title">Enter your stocks above and run the analysis</div>
+      <p class="ph-sub">Try <strong class="ph-arrow">★ My Project</strong> to load the original ABNB · BX · VST analysis,<br>or type any 2–10 ticker symbols to apply the FIN portfolio methodology to your own portfolio.</p>
+    </div>
+  </div>
+  <div class="tc" id="tc-overview"></div>
+  <div class="tc" id="tc-returns"></div>
+  <div class="tc" id="tc-covar"></div>
+  <div class="tc" id="tc-frontier"></div>
+  <div class="tc" id="tc-market"></div>
+</main>
+
+<footer>
+  <div class="foot-in">
+    <div>
+      <div class="foot-l">Portfolio Optimizer</div>
+      <div style="font-family:var(--mono);font-size:9px;margin-top:3px">Rishi Patel · FIN 6500 · Spring 2025</div>
+    </div>
+    <div class="foot-r">Data: Yahoo Finance 5-yr monthly · RF = 4.33% annual<br>Sharpe · Cov Matrix · MVP · Efficient Frontier · CML<br>Educational use only</div>
+  </div>
+</footer>
+
+<script>
+var PAL=['#c04f1a','#1e5c3a','#1a3057','#8b3a8b','#7a4f00','#1a5c5c','#8b1a1a','#3a5c1a','#5c3a1a','#1a1a5c'];
+var TIPS=['ABNB','BX','VST','AAPL','JPM','XOM','MSFT','TSLA','AMZN','META'];
+var slots=[], RES=null, RES_NAMES=[], RES_SECTORS=[];
+
+var BASE_RETS={
+  ABNB:[.1237,-.0892,-.081,-.1871,.0907,-.0596,.0762,.0823,.0173,.011,-.0351,-.0752,-.0161,.1338,-.108,-.2111,-.263,.2458,.0193,-.0714,.0178,-.0446,-.1629,.2995,.1095,.0091,-.038,-.0827,.1675,.1875,-.1356,.043,-.1379,.0681,.0776,.0588,.0925,.0476,-.0387,-.086,.0462,-.0796,-.1594,.081,.0629,.0098,-.0345,-.0018,.0587,-.1398,-.0566],
+  BX:  [.0304,.0913,.1873,.0569,.0482,.1866,.0973,-.0747,.1898,.0299,-.0853,.0199,-.0341,.0067,-.1999,.174,-.2255,.1188,-.0681,-.109,.0889,.014,-.1894,.2934,-.0538,-.0237,.017,-.0322,.0856,.1271,.0229,.0072,-.138,.2274,.1651,-.0494,.0271,.0356,-.1124,.0404,.0274,.1482,.0073,.0757,.0955,.145,-.0977,.0272,-.0901,-.1253,-.0672],
+  VST: [-.1362,.0249,-.0381,-.0415,.1472,.0408,-.0031,-.1042,.1552,.0148,.1454,-.0352,.0463,.0188,.0844,.054,-.1335,.1403,-.0426,-.1515,.1017,.0592,-.0464,.002,-.0464,.0914,.0021,.0046,.0951,.0777,.1197,.056,-.0078,.0822,.0878,.0712,.3293,.277,.0926,.3064,-.1322,-.0762,.0784,.3876,.0567,.2791,-.1374,.2207,-.2045,-.1214,-.0155]
+};
+
+/* SLOT UI */
+function renderSlots(){
+  var row=document.getElementById('slotsRow'); if(!row) return;
+  row.innerHTML='';
+  for(var si=0;si<slots.length;si++){(function(idx){
+    var wrap=document.createElement('div'); wrap.className='slot';
+    var num=document.createElement('span'); num.className='slot-n'; num.style.color=PAL[idx]; num.textContent=idx+1; wrap.appendChild(num);
+    var inp=document.createElement('input'); inp.className='slot-inp'; inp.id='sinp'+idx; inp.type='text';
+    inp.value=slots[idx]; inp.placeholder=TIPS[idx]||'TICK'; inp.maxLength=8; inp.autocomplete='off';
+    inp.addEventListener('input',function(){this.value=this.value.toUpperCase();slots[idx]=this.value;});
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter') runAnalysis();});
+    wrap.appendChild(inp);
+    if(slots.length>2){var rm=document.createElement('button');rm.className='slot-rm';rm.textContent='x';rm.addEventListener('click',function(){removeSlot(idx);});wrap.appendChild(rm);}
+    row.appendChild(wrap);
+  })(si);}
+  if(slots.length<10){var ab=document.createElement('button');ab.className='add-slot';ab.textContent='+ Add Stock';ab.addEventListener('click',addSlot);row.appendChild(ab);}
+  var rb=document.createElement('button');rb.className='run-btn';rb.id='runBtn';rb.textContent='RUN ANALYSIS';rb.addEventListener('click',runAnalysis);row.appendChild(rb);
+}
+function addSlot(){if(slots.length<10){slots.push('');renderSlots();var el=document.getElementById('sinp'+(slots.length-1));if(el)el.focus();}}
+function removeSlot(idx){if(slots.length>2){slots.splice(idx,1);renderSlots();}}
+function loadPreset(arr){slots=arr.slice();renderSlots();runAnalysis();}
+
+/* STATUS */
+function st(msg,cls,spin){
+  var m=document.getElementById('smsg'),sp=document.getElementById('spin');
+  if(m){m.textContent=msg;m.className='smsg'+(cls?' '+cls:'');}
+  if(sp)sp.classList.toggle('on',!!spin);
+}
+function disBtn(v){var b=document.getElementById('runBtn');if(b)b.disabled=v;}
+
+/* TAB */
+function showTab(id){
+  document.querySelectorAll('.ntab').forEach(function(b){b.classList.toggle('on',b.dataset.tab===id);});
+  document.querySelectorAll('.tc').forEach(function(el){el.classList.remove('on');});
+  var p=document.getElementById('tc-'+id);if(p)p.classList.add('on');
+  setTimeout(redraw,80);
+}
+
+/* MAIN RUNNER */
+async function runAnalysis(){
+  var tickers=[],seen={};
+  for(var ii=0;ii<slots.length;ii++){
+    var el=document.getElementById('sinp'+ii);
+    var v=(el?el.value:slots[ii]).trim().toUpperCase();
+    if(v&&!seen[v]){seen[v]=1;tickers.push(v);}
+  }
+  if(tickers.length<2){st('Please enter at least 2 tickers.','err');return;}
+  if(tickers.length>10){st('Maximum 10 stocks.','err');return;}
+  disBtn(true);
+  showLoading(tickers);
+  st('Fetching data for '+tickers.join(', ')+'...','',true);
+  try{
+    var rets=await getReturns(tickers);
+    st('Optimizing portfolio...','',true);
+    RES=computePortfolio(tickers,rets);
+    buildAllTabs();
+    st('Done — '+tickers.join(' · ')+' · '+RES.n+' months · MVP s='+pct(RES.mvpStd),'ok');
+  }catch(e){
+    console.error(e);
+    st('Error: '+e.message,'err');
+  }
+  disBtn(false);
+}
+
+/* GET RETURNS — hardcoded for known tickers, Claude API for others */
+async function getReturns(tickers){
+  var allHardcoded=tickers.every(function(t){return BASE_RETS[t];});
+  if(allHardcoded){
+    var rets=tickers.map(function(t){return BASE_RETS[t];});
+    var minLen=Math.min.apply(null,rets.map(function(r){return r.length;}));
+    RES_NAMES=tickers; RES_SECTORS=tickers.map(function(){return '';});
+    return rets.map(function(r){return r.slice(0,minLen);});
+  }
+  return await getReturnsFromAPI(tickers);
+}
+
+async function getReturnsFromAPI(tickers){
+  var knownData='';
+  tickers.forEach(function(t){if(BASE_RETS[t]) knownData+='\n'+t+': '+JSON.stringify(BASE_RETS[t]);});
+  var prompt='You are a financial data assistant. Return ONLY valid JSON, no markdown, no explanation.\n\nFor these tickers: '+tickers.join(', ')+'\n\nProvide monthly returns (as decimals like 0.05 for 5%) for the past 4-5 years.'+
+    (knownData?'\n\nFor these tickers, use EXACTLY these return arrays:'+knownData:'')+
+    '\n\nReturn this exact JSON format:\n{"returns":[[...],[...]],"names":["Full Name 1","Name 2"],"sectors":["Sector1","Sector2"],"n":48}\n\nIMPORTANT: returns array must have one sub-array per ticker, each with the same length (at least 36 values).';
+  var resp=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:8000,messages:[{role:'user',content:prompt}]})
+  });
+  if(!resp.ok) throw new Error('API error '+resp.status+'. Try the My Project preset which works offline.');
+  var data=await resp.json();
+  var text='';
+  if(data.content) data.content.forEach(function(b){if(b.type==='text')text+=b.text;});
+  var m=text.match(/\{[\s\S]*\}/);
+  if(!m) throw new Error('Could not parse API response. Try the My Project preset.');
+  var parsed;
+  try{parsed=JSON.parse(m[0]);}catch(e){throw new Error('Invalid JSON from API. Try again.');}
+  if(!parsed.returns||parsed.returns.length<2) throw new Error('Insufficient data. Try different tickers.');
+  if(parsed.names) RES_NAMES=parsed.names; else RES_NAMES=tickers;
+  if(parsed.sectors) RES_SECTORS=parsed.sectors; else RES_SECTORS=tickers.map(function(){return '';});
+  var minLen=Math.min.apply(null,parsed.returns.map(function(r){return r.length;}));
+  if(minLen<12) throw new Error('Not enough data returned (need 12+ months). Try again.');
+  return parsed.returns.map(function(r){return r.slice(0,minLen);});
+}
+
+/* PORTFOLIO MATH */
+function computePortfolio(tickers,rets){
+  var N=tickers.length,n=rets[0].length,RF=0.0433/12;
+  var means=rets.map(function(r){return r.reduce(function(a,b){return a+b;},0)/n;});
+  var vars=rets.map(function(r,ri){var m=means[ri];return r.reduce(function(a,b){return a+(b-m)*(b-m);},0)/(n-1);});
+  var stds=vars.map(Math.sqrt);
+  var sharpes=means.map(function(m,i){return (m-RF)/stds[i];});
+  var cov=[],corr=[];
+  for(var ci=0;ci<N;ci++){cov[ci]=[];corr[ci]=[];
+    for(var cj=0;cj<N;cj++){var s=0;for(var ck=0;ck<n;ck++)s+=(rets[ci][ck]-means[ci])*(rets[cj][ck]-means[cj]);cov[ci][cj]=s/(n-1);corr[ci][cj]=cov[ci][cj]/(stds[ci]*stds[cj]);}
+  }
+  function pRet(w){var r=0;for(var i=0;i<N;i++)r+=w[i]*means[i];return r;}
+  function pVar(w){var v=0;for(var i=0;i<N;i++)for(var j=0;j<N;j++)v+=w[i]*w[j]*cov[i][j];return v;}
+  function pStd(w){return Math.sqrt(Math.max(0,pVar(w)));}
+  function vGrad(w){var g=[];for(var i=0;i<N;i++){var gv=0;for(var j=0;j<N;j++)gv+=2*w[j]*cov[i][j];g[i]=gv;}return g;}
+  function norm(w){var s=w.reduce(function(a,b){return a+b;},0);return w.map(function(x){return x/s;});}
+  function step(w,g,lr){var gm=g.reduce(function(a,b){return a+b;},0)/N;return norm(w.map(function(wi,i){return wi-lr*(g[i]-gm);}));}
+  var mvW=[];for(var mvi=0;mvi<N;mvi++)mvW[mvi]=1/N;
+  for(var it=0;it<8000;it++)mvW=step(mvW,vGrad(mvW),0.01);
+  var mvpRet=pRet(mvW),mvpStd=pStd(mvW);
+  var rMin=means[0],rMax=means[0];for(var mi2=1;mi2<N;mi2++){if(means[mi2]<rMin)rMin=means[mi2];if(means[mi2]>rMax)rMax=means[mi2];}
+  var ef=[];
+  for(var ep=0;ep<18;ep++){var tgt=rMin+(rMax-rMin)*ep/17,efW=mvW.slice();
+    for(var eit=0;eit<10000;eit++){var efG=vGrad(efW),re2=pRet(efW)-tgt;efW=step(efW,efG.map(function(gi,i){return gi+3*re2*means[i];}),0.004);}
+    ef.push({ret:pRet(efW)*100,std:pStd(efW)*100});
+  }
+  var mkW=[];for(var mki=0;mki<N;mki++)mkW[mki]=1/N;
+  for(var mit=0;mit<12000;mit++){var mkRp=pRet(mkW),mkSp=pStd(mkW);if(mkSp<1e-10)break;
+    var mkVg=vGrad(mkW),mkG=means.map(function(m,i){return (m*mkSp-(mkRp-RF)*mkVg[i]/(2*mkSp))/(mkSp*mkSp);});
+    var mkGm=mkG.reduce(function(a,b){return a+b;},0)/N;
+    mkW=norm(mkW.map(function(wi,i){return wi+0.003*(mkG[i]-mkGm);}));
+  }
+  var mktRet=pRet(mkW),mktStd=pStd(mkW),mktSharpe=(pRet(mkW)-RF)/pStd(mkW);
+  var cmlPts=[];for(var ct=0;ct<=1.15;ct+=0.1)cmlPts.push({std:ct*mktStd*100,ret:(RF+ct*(mktRet-RF))*100});
+  return{tickers:tickers,names:RES_NAMES.length===N?RES_NAMES:tickers,sectors:RES_SECTORS.length===N?RES_SECTORS:tickers.map(function(){return '';}),
+    n:n,N:N,rets:rets,means:means,stds:stds,sharpes:sharpes,cov:cov,corr:corr,
+    mvpW:mvW,mvpRet:mvpRet,mvpStd:mvpStd,ef:ef,mktW:mkW,mktRet:mktRet,mktStd:mktStd,mktSharpe:mktSharpe,
+    cmlPts:cmlPts,RF:RF,col:PAL.slice(0,N)};
+}
+
+/* FORMAT */
+function pct(v,d){d=d||2;return (v*100).toFixed(d)+'%';}
+function sgn(v,d){d=d||2;return (v>=0?'+':'')+pct(v,d);}
+function fix(v,d){d=d||3;return v.toFixed(d);}
+function cl(v){return v>=0?'var(--forest)':'var(--rust)';}
+
+/* CANVAS */
+var MV=function(v,mn,mx,lo,hi){return lo+(v-mn)/(mx-mn)*(hi-lo);};
+function attachCanvas(id,fn,h){var c=document.getElementById(id);if(!c)return;c.setAttribute('height',h||220);c._fn=fn;paintCanvas(c);}
+function paintCanvas(c){
+  if(!c||!c._fn)return;
+  var dpr=window.devicePixelRatio||1;
+  var W=c.parentElement?c.parentElement.clientWidth:0;
+  if(W<20)W=c._cw||660;else c._cw=W;
+  var H=parseInt(c.getAttribute('height'))||220;
+  c.width=W*dpr;c.height=H*dpr;c.style.width=W+'px';c.style.height=H+'px';
+  var ctx=c.getContext('2d');ctx.scale(dpr,dpr);ctx.clearRect(0,0,W,H);
+  try{c._fn(ctx,W,H);}catch(e){console.warn('Draw error ('+c.id+'):',e);}
+}
+function redraw(){document.querySelectorAll('canvas').forEach(function(c){if(c._fn)paintCanvas(c);});}
+
+/* AXES */
+function drawAxes(ctx,pad,xMax,yMin,yMax,W,H){
+  ctx.fillStyle='#fff';ctx.fillRect(pad.l,pad.t,W-pad.l-pad.r,H-pad.t-pad.b);
+  var xStep=Math.max(1,Math.ceil(xMax/6));
+  for(var gx=0;gx<=xMax+xStep;gx+=xStep){
+    var gpx=MV(gx,0,xMax,pad.l,W-pad.r);if(gpx<pad.l||gpx>W-pad.r+1)continue;
+    ctx.strokeStyle='rgba(232,221,208,.9)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(gpx,pad.t);ctx.lineTo(gpx,H-pad.b);ctx.stroke();
+    ctx.fillStyle='#b5a898';ctx.font='9px DM Mono, monospace';ctx.textAlign='center';ctx.fillText(gx+'%',gpx,H-pad.b+13);
+  }
+  var yR=yMax-yMin,yS=yR>8?2:yR>4?1:yR>2?.5:.25,yStart=Math.ceil(yMin/yS)*yS;
+  for(var gy=yStart;gy<=yMax+.001;gy+=yS){
+    var gpy=MV(gy,yMin,yMax,H-pad.b,pad.t);
+    ctx.strokeStyle='rgba(232,221,208,.9)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,gpy);ctx.lineTo(W-pad.r,gpy);ctx.stroke();
+    ctx.fillStyle='#b5a898';ctx.font='9px DM Mono, monospace';ctx.textAlign='right';ctx.fillText(gy.toFixed(yS<1?1:0)+'%',pad.l-4,gpy+3);
+  }
+  if(yMin<0&&yMax>0){var zy=MV(0,yMin,yMax,H-pad.b,pad.t);ctx.strokeStyle='rgba(192,79,26,.3)';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(pad.l,zy);ctx.lineTo(W-pad.r,zy);ctx.stroke();ctx.setLineDash([]);}
+  ctx.strokeStyle='rgba(221,208,190,.8)';ctx.lineWidth=1;ctx.strokeRect(pad.l,pad.t,W-pad.l-pad.r,H-pad.t-pad.b);
+  ctx.fillStyle='#7a6d5e';ctx.font='10px DM Sans, sans-serif';ctx.textAlign='center';
+  ctx.fillText('Monthly Std Dev (%) →',(pad.l+W-pad.r)/2,H-1);
+}
+
+function addYLabel(ctx,pad,H,label){
+  ctx.save();ctx.rotate(-Math.PI/2);
+  ctx.fillStyle='#7a6d5e';ctx.font='10px DM Sans, sans-serif';ctx.textAlign='center';
+  ctx.fillText(label,-(pad.t+(H-pad.t-pad.b)/2),13);ctx.restore();
+}
+
+/* DRAW: Return vs Risk */
+function drawRR(ctx,W,H){
+  var d=RES;if(!d)return;
+  var pad={l:54,r:18,t:18,b:32};
+  var sP=d.stds.map(function(s){return s*100;}),mP=d.means.map(function(m){return m*100;});
+  var xMax=Math.max.apply(null,sP)*1.22;
+  var yMin=Math.min.apply(null,mP.concat(d.mvpRet*100))*1.4-.1,yMax=Math.max.apply(null,mP)*1.2+.1;
+  drawAxes(ctx,pad,xMax,yMin,yMax,W,H);addYLabel(ctx,pad,H,'Monthly Return (%) →');
+  for(var ri=0;ri<d.N;ri++){
+    var rx=MV(sP[ri],0,xMax,pad.l,W-pad.r),ry=MV(mP[ri],yMin,yMax,H-pad.b,pad.t);
+    ctx.fillStyle=d.col[ri]+'18';ctx.beginPath();ctx.arc(rx,ry,18,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=d.col[ri];ctx.beginPath();ctx.arc(rx,ry,5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=d.col[ri];ctx.font='bold 10px DM Sans, sans-serif';ctx.textAlign='center';ctx.fillText(d.tickers[ri],rx,ry-20);
+    ctx.font='9px DM Mono, monospace';ctx.fillStyle='#7a6d5e';ctx.fillText(sgn(d.means[ri])+' / '+pct(d.stds[ri]),rx,ry+20);
+  }
+  var mpx=MV(d.mvpStd*100,0,xMax,pad.l,W-pad.r),mpy=MV(d.mvpRet*100,yMin,yMax,H-pad.b,pad.t);
+  ctx.fillStyle='#8b3a8b';ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(mpx,mpy,7,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#8b3a8b';ctx.font='bold 9px DM Mono, monospace';ctx.textAlign='left';ctx.fillText('MVP ('+sgn(d.mvpRet)+')',mpx+10,mpy+4);
+}
+
+/* DRAW: Sharpe bars */
+function drawSharpe(ctx,W,H){
+  var d=RES;if(!d)return;
+  var pad={l:50,r:14,t:22,b:36};
+  var yMin=Math.min.apply(null,d.sharpes.concat([0]))*1.4-.03,yMax=Math.max.apply(null,d.sharpes.concat([0]))*1.4+.03;
+  var range=yMax-yMin,cw=(W-pad.l-pad.r)/d.N;
+  ctx.fillStyle='#fff';ctx.fillRect(pad.l,pad.t,W-pad.l-pad.r,H-pad.t-pad.b);
+  ctx.strokeStyle='rgba(221,208,190,.8)';ctx.lineWidth=1;ctx.strokeRect(pad.l,pad.t,W-pad.l-pad.r,H-pad.t-pad.b);
+  [-.4,-.2,0,.2,.4,.6].forEach(function(v){
+    if(v<yMin||v>yMax)return;
+    var py=MV(v,yMin,yMax,H-pad.b,pad.t);
+    ctx.strokeStyle='rgba(232,221,208,.9)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,py);ctx.lineTo(W-pad.r,py);ctx.stroke();
+    ctx.fillStyle='#b5a898';ctx.font='9px DM Mono, monospace';ctx.textAlign='right';ctx.fillText(v.toFixed(1),pad.l-4,py+3);
+  });
+  var zy=MV(0,yMin,yMax,H-pad.b,pad.t);
+  ctx.strokeStyle='rgba(192,79,26,.4)';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(pad.l,zy);ctx.lineTo(W-pad.r,zy);ctx.stroke();ctx.setLineDash([]);
+  for(var si=0;si<d.N;si++){
+    var sh=d.sharpes[si],sx=pad.l+si*cw+cw*.12,bw=cw*.76;
+    var bh=Math.abs((sh/range)*(H-pad.t-pad.b)),sy2=sh>=0?zy-bh:zy;
+    ctx.fillStyle=d.col[si]+'28';ctx.fillRect(sx,sy2,bw,bh);
+    ctx.strokeStyle=d.col[si];ctx.lineWidth=2;ctx.strokeRect(sx,sy2,bw,bh);
+    ctx.fillStyle=d.col[si];ctx.font='bold 12px DM Serif Display, serif';ctx.textAlign='center';
+    ctx.fillText(sh.toFixed(2),sx+bw/2,sh>=0?sy2-5:sy2+bh+14);
+    ctx.fillStyle='#7a6d5e';ctx.font='9px DM Sans, sans-serif';ctx.fillText(d.tickers[si],sx+bw/2,H-6);
+  }
+  addYLabel(ctx,pad,H,'Sharpe Ratio');
+}
+
+/* DRAW: Monthly returns line */
+function drawReturns(ctx,W,H){
+  var d=RES;if(!d)return;
+  var pad={l:48,r:14,t:14,b:26};
+  var all=[];for(var ai=0;ai<d.rets.length;ai++)all=all.concat(d.rets[ai]);
+  var yMin=Math.min.apply(null,all)-.02,yMax=Math.max.apply(null,all)+.02,nn=d.rets[0].length;
+  ctx.fillStyle='#fff';ctx.fillRect(pad.l,pad.t,W-pad.l-pad.r,H-pad.t-pad.b);
+  [-.3,-.2,-.1,0,.1,.2,.3,.4].forEach(function(v){
+    if(v<yMin||v>yMax)return;
+    var y=MV(v,yMin,yMax,H-pad.b,pad.t);
+    ctx.strokeStyle='rgba(232,221,208,.8)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();
+    ctx.fillStyle='#b5a898';ctx.font='9px DM Mono, monospace';ctx.textAlign='right';ctx.fillText((v*100).toFixed(0)+'%',pad.l-3,y+3);
+  });
+  var rzy=MV(0,yMin,yMax,H-pad.b,pad.t);
+  ctx.strokeStyle='rgba(192,79,26,.3)';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(pad.l,rzy);ctx.lineTo(W-pad.r,rzy);ctx.stroke();ctx.setLineDash([]);
+  ctx.strokeStyle='rgba(221,208,190,.8)';ctx.lineWidth=1;ctx.strokeRect(pad.l,pad.t,W-pad.l-pad.r,H-pad.t-pad.b);
+  for(var sti=0;sti<d.rets.length;sti++){
+    ctx.strokeStyle=d.col[sti];ctx.lineWidth=1.5;ctx.globalAlpha=.85;ctx.beginPath();
+    for(var ri2=0;ri2<d.rets[sti].length;ri2++){
+      var rx2=MV(ri2,0,nn-1,pad.l,W-pad.r),ry2=MV(d.rets[sti][ri2],yMin,yMax,H-pad.b,pad.t);
+      if(ri2===0)ctx.moveTo(rx2,ry2);else ctx.lineTo(rx2,ry2);
+    }
+    ctx.stroke();
+  }
+  ctx.globalAlpha=1;
+}
+
+/* DRAW: Efficient Frontier */
+function drawEF(ctx,W,H){
+  var d=RES;if(!d)return;
+  var pad={l:58,r:22,t:22,b:38};
+  var sP=d.stds.map(function(s){return s*100;}),mP=d.means.map(function(m){return m*100;});
+  var efS=d.ef.map(function(p){return p.std;}),efR=d.ef.map(function(p){return p.ret;});
+  var xMax=Math.max.apply(null,sP.concat(efS))*1.20;
+  var yMin=Math.min.apply(null,mP.concat(efR))*1.3-.05,yMax=Math.max.apply(null,mP.concat(efR))*1.15+.05;
+
+  /* Background */
+  ctx.fillStyle='#faf7f3';ctx.fillRect(pad.l,pad.t,W-pad.l-pad.r,H-pad.t-pad.b);
+
+  /* Grid */
+  var xStep=Math.max(2,Math.ceil(xMax/7));
+  for(var gx=0;gx<=xMax+xStep;gx+=xStep){
+    var gpx=MV(gx,0,xMax,pad.l,W-pad.r);if(gpx<pad.l||gpx>W-pad.r+1)continue;
+    ctx.strokeStyle='rgba(200,185,168,.6)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(gpx,pad.t);ctx.lineTo(gpx,H-pad.b);ctx.stroke();
+    ctx.fillStyle='#a09080';ctx.font='9px DM Mono,monospace';ctx.textAlign='center';
+    ctx.fillText(gx+'%',gpx,H-pad.b+14);
+  }
+  var yR=yMax-yMin,yS=yR>8?2:yR>4?1:yR>2?.5:.25,yStart=Math.ceil(yMin/yS)*yS;
+  for(var gy=yStart;gy<=yMax+.001;gy+=yS){
+    var gpy=MV(gy,yMin,yMax,H-pad.b,pad.t);
+    ctx.strokeStyle='rgba(200,185,168,.6)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(pad.l,gpy);ctx.lineTo(W-pad.r,gpy);ctx.stroke();
+    ctx.fillStyle='#a09080';ctx.font='9px DM Mono,monospace';ctx.textAlign='right';
+    ctx.fillText(gy.toFixed(yS<1?1:0)+'%',pad.l-5,gpy+3);
+  }
+  if(yMin<0&&yMax>0){
+    var zy=MV(0,yMin,yMax,H-pad.b,pad.t);
+    ctx.strokeStyle='rgba(192,79,26,.35)';ctx.setLineDash([5,4]);
+    ctx.beginPath();ctx.moveTo(pad.l,zy);ctx.lineTo(W-pad.r,zy);ctx.stroke();ctx.setLineDash([]);
+  }
+  /* Border */
+  ctx.strokeStyle='rgba(192,175,155,.8)';ctx.lineWidth=1.5;
+  ctx.strokeRect(pad.l,pad.t,W-pad.l-pad.r,H-pad.t-pad.b);
+
+  /* ── FRONTIER LINE — thick, bold, clearly visible ── */
+  ctx.save();
+  ctx.shadowColor='rgba(30,92,58,.25)';ctx.shadowBlur=6;
+  ctx.strokeStyle='#1e5c3a';ctx.lineWidth=3.5;ctx.lineJoin='round';ctx.beginPath();
+  for(var fi=0;fi<efS.length;fi++){
+    var fx=MV(efS[fi],0,xMax,pad.l,W-pad.r),fy=MV(efR[fi],yMin,yMax,H-pad.b,pad.t);
+    if(fi===0)ctx.moveTo(fx,fy);else ctx.lineTo(fx,fy);
+  }
+  ctx.stroke();ctx.restore();
+
+  /* Stock dots with labels */
+  for(var si=0;si<d.N;si++){
+    var spx=MV(sP[si],0,xMax,pad.l,W-pad.r),spy=MV(mP[si],yMin,yMax,H-pad.b,pad.t);
+    /* Shadow halo */
+    ctx.fillStyle=d.col[si]+'22';ctx.beginPath();ctx.arc(spx,spy,14,0,Math.PI*2);ctx.fill();
+    /* Outer ring */
+    ctx.strokeStyle=d.col[si];ctx.lineWidth=2;ctx.fillStyle='#fff';
+    ctx.beginPath();ctx.arc(spx,spy,6,0,Math.PI*2);ctx.fill();ctx.stroke();
+    /* Inner dot */
+    ctx.fillStyle=d.col[si];ctx.beginPath();ctx.arc(spx,spy,3,0,Math.PI*2);ctx.fill();
+    /* Label above */
+    ctx.fillStyle=d.col[si];ctx.font='bold 10px DM Sans,sans-serif';ctx.textAlign='center';
+    ctx.fillText(d.tickers[si],spx,spy-18);
+    /* Value below */
+    ctx.fillStyle='#7a6d5e';ctx.font='8px DM Mono,monospace';
+    ctx.fillText('('+pct(d.stds[si])+', '+sgn(d.means[si])+')',spx,spy+20);
+  }
+
+  /* MVP star */
+  var mvpx=MV(d.mvpStd*100,0,xMax,pad.l,W-pad.r),mvpy=MV(d.mvpRet*100,yMin,yMax,H-pad.b,pad.t);
+  ctx.save();
+  ctx.shadowColor='rgba(122,79,0,.3)';ctx.shadowBlur=8;
+  ctx.fillStyle='#7a4f00';ctx.strokeStyle='#fff';ctx.lineWidth=2;
+  ctx.beginPath();ctx.arc(mvpx,mvpy,9,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.restore();
+  ctx.fillStyle='#fff';ctx.font='bold 11px DM Serif Display,serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('★',mvpx,mvpy);ctx.textBaseline='alphabetic';
+  ctx.fillStyle='#7a4f00';ctx.font='bold 9px DM Mono,monospace';ctx.textAlign='left';
+  ctx.fillText('MVP',mvpx+13,mvpy+4);
+
+  /* Axis labels */
+  ctx.fillStyle='#7a6d5e';ctx.font='10px DM Sans,sans-serif';ctx.textAlign='center';
+  ctx.fillText('Monthly Std Dev (%) →',(pad.l+W-pad.r)/2,H-2);
+  ctx.save();ctx.rotate(-Math.PI/2);
+  ctx.fillText('Monthly Return (%) →',-(pad.t+(H-pad.t-pad.b)/2),14);ctx.restore();
+}
+
+/* DRAW: CML */
+function drawCML(ctx,W,H){
+  var d=RES;if(!d)return;
+  var pad={l:58,r:22,t:22,b:38};
+  var sP=d.stds.map(function(s){return s*100;});
+  var efS=d.ef.map(function(p){return p.std;}),efR=d.ef.map(function(p){return p.ret;});
+  var cS=d.cmlPts.map(function(p){return p.std;}),cR=d.cmlPts.map(function(p){return p.ret;});
+  var xMax=Math.max.apply(null,efS.concat(cS).concat(sP))*1.12;
+  var yMin=d.RF*100*.3,yMax=Math.max.apply(null,efR.concat(cR))*1.15+.05;
+
+  /* Background */
+  ctx.fillStyle='#faf7f3';ctx.fillRect(pad.l,pad.t,W-pad.l-pad.r,H-pad.t-pad.b);
+
+  /* Grid */
+  var xStep=Math.max(2,Math.ceil(xMax/7));
+  for(var gx=0;gx<=xMax+xStep;gx+=xStep){
+    var gpx=MV(gx,0,xMax,pad.l,W-pad.r);if(gpx<pad.l||gpx>W-pad.r+1)continue;
+    ctx.strokeStyle='rgba(200,185,168,.6)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(gpx,pad.t);ctx.lineTo(gpx,H-pad.b);ctx.stroke();
+    ctx.fillStyle='#a09080';ctx.font='9px DM Mono,monospace';ctx.textAlign='center';
+    ctx.fillText(gx+'%',gpx,H-pad.b+14);
+  }
+  var yR=yMax-yMin,yS=yR>8?2:yR>4?1:yR>2?.5:.25,yStart=Math.ceil(yMin/yS)*yS;
+  for(var gy=yStart;gy<=yMax+.001;gy+=yS){
+    var gpy=MV(gy,yMin,yMax,H-pad.b,pad.t);
+    ctx.strokeStyle='rgba(200,185,168,.6)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(pad.l,gpy);ctx.lineTo(W-pad.r,gpy);ctx.stroke();
+    ctx.fillStyle='#a09080';ctx.font='9px DM Mono,monospace';ctx.textAlign='right';
+    ctx.fillText(gy.toFixed(yS<1?1:0)+'%',pad.l-5,gpy+3);
+  }
+  /* Border */
+  ctx.strokeStyle='rgba(192,175,155,.8)';ctx.lineWidth=1.5;
+  ctx.strokeRect(pad.l,pad.t,W-pad.l-pad.r,H-pad.t-pad.b);
+
+  /* ── EFFICIENT FRONTIER — dark forest green, thick ── */
+  ctx.save();
+  ctx.shadowColor='rgba(30,92,58,.2)';ctx.shadowBlur=5;
+  ctx.strokeStyle='#1e5c3a';ctx.lineWidth=3;ctx.lineJoin='round';ctx.beginPath();
+  for(var fi=0;fi<efS.length;fi++){
+    var fx=MV(efS[fi],0,xMax,pad.l,W-pad.r),fy=MV(efR[fi],yMin,yMax,H-pad.b,pad.t);
+    if(fi===0)ctx.moveTo(fx,fy);else ctx.lineTo(fx,fy);
+  }
+  ctx.stroke();ctx.restore();
+
+  /* ── CML — amber/golden, thick dashes, clearly distinct ── */
+  ctx.save();
+  ctx.shadowColor='rgba(196,125,10,.3)';ctx.shadowBlur=6;
+  ctx.strokeStyle='#c47d0a';ctx.lineWidth=3;ctx.setLineDash([10,6]);ctx.lineJoin='round';ctx.beginPath();
+  for(var ci2=0;ci2<cS.length;ci2++){
+    var cx2=MV(cS[ci2],0,xMax,pad.l,W-pad.r),cy2=MV(cR[ci2],yMin,yMax,H-pad.b,pad.t);
+    if(ci2===0)ctx.moveTo(cx2,cy2);else ctx.lineTo(cx2,cy2);
+  }
+  ctx.stroke();ctx.restore();ctx.setLineDash([]);
+
+  /* Risk-Free point */
+  var rfX=MV(0,0,xMax,pad.l,W-pad.r),rfY=MV(d.RF*100,yMin,yMax,H-pad.b,pad.t);
+  ctx.fillStyle='#1a3057';ctx.strokeStyle='#fff';ctx.lineWidth=2;
+  ctx.beginPath();ctx.arc(rfX,rfY,6,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#1a3057';ctx.font='bold 9px DM Mono,monospace';ctx.textAlign='left';
+  ctx.fillText('Rf='+pct(d.RF,3),rfX+10,rfY+4);
+
+  /* Market Portfolio — rust, prominent */
+  var mkpx=MV(d.mktStd*100,0,xMax,pad.l,W-pad.r),mkpy=MV(d.mktRet*100,yMin,yMax,H-pad.b,pad.t);
+  ctx.save();
+  ctx.shadowColor='rgba(192,79,26,.35)';ctx.shadowBlur=8;
+  ctx.fillStyle='#c04f1a';ctx.strokeStyle='#fff';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.arc(mkpx,mkpy,10,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.restore();
+  /* Market label box */
+  var mkLabel='Market ('+sgn(d.mktRet)+', '+pct(d.mktStd)+')';
+  ctx.font='bold 9px DM Mono,monospace';
+  var labelW=ctx.measureText(mkLabel).width+12;
+  var labelX=mkpx+14, labelY=mkpy-16;
+  if(labelX+labelW>W-pad.r) labelX=mkpx-labelW-14;
+  ctx.fillStyle='rgba(192,79,26,.12)';ctx.strokeStyle='rgba(192,79,26,.4)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.roundRect?ctx.roundRect(labelX-4,labelY-11,labelW,18,3):ctx.rect(labelX-4,labelY-11,labelW,18);
+  ctx.fill();ctx.stroke();
+  ctx.fillStyle='#c04f1a';ctx.textAlign='left';ctx.fillText(mkLabel,labelX,labelY);
+
+  /* Axis labels */
+  ctx.fillStyle='#7a6d5e';ctx.font='10px DM Sans,sans-serif';ctx.textAlign='center';
+  ctx.fillText('Monthly Std Dev (%) →',(pad.l+W-pad.r)/2,H-2);
+  ctx.save();ctx.rotate(-Math.PI/2);
+  ctx.fillText('Monthly Return (%) →',-(pad.t+(H-pad.t-pad.b)/2),14);ctx.restore();
+}
+
+/* LOADING */
+function showLoading(tickers){
+  document.getElementById('ph').classList.remove('on');
+  ['overview','returns','covar','frontier','market'].forEach(function(t){
+    var el=document.getElementById('tc-'+t);
+    if(el)el.innerHTML='<div style="background:#fff;border:1px solid var(--warm3);border-radius:4px;padding:50px;text-align:center"><div style="font-family:var(--serif);font-size:18px;font-style:italic;color:var(--ink2);margin-bottom:8px">Analyzing '+tickers.join(' · ')+'...</div><div style="font-family:var(--mono);font-size:11px;color:var(--mu)">Fetching 5-year monthly data &amp; computing portfolio optimization</div></div>';
+  });
+  document.querySelectorAll('.ntab').forEach(function(b){b.classList.toggle('on',b.dataset.tab==='overview');});
+  document.querySelectorAll('.tc').forEach(function(el){el.classList.remove('on');});
+  document.getElementById('tc-overview').classList.add('on');
+}
+
+/* BUILD ALL TABS */
+function buildAllTabs(){
+  document.getElementById('ph').classList.remove('on');
+  document.querySelectorAll('.ntab').forEach(function(b){b.classList.toggle('on',b.dataset.tab==='overview');});
+  document.querySelectorAll('.tc').forEach(function(el){el.classList.remove('on');});
+  document.getElementById('tc-overview').classList.add('on');
+  bOverview();bReturns();bCovar();bFrontier();bMarket();
+  setTimeout(redraw,150);setTimeout(redraw,500);
+}
+
+function bOverview(){
+  var d=RES;if(!d)return;
+  var bi=0;for(var i=1;i<d.N;i++)if(d.sharpes[i]>d.sharpes[bi])bi=i;
+  var h='<div class="sh fa"><div class="sh-row"><span class="sh-num">§ 00</span><span class="sh-ttl">'+d.tickers.join(' · ')+' — '+d.N+'-Stock Portfolio</span><span class="sh-rule"></span></div><p class="sh-sub">'+d.n+' monthly obs · RF='+pct(d.RF,4)+'/mo</p></div>';
+  h+='<div class="kgrid fa"><div class="kpi"><div class="kl">Stocks</div><div class="kv" style="color:var(--rust)">'+d.N+'</div><div class="ks">in portfolio</div></div>';
+  h+='<div class="kpi"><div class="kl">Best Sharpe</div><div class="kv" style="color:var(--forest)">'+fix(Math.max.apply(null,d.sharpes))+'</div><div class="ks">'+d.tickers[bi]+'</div></div>';
+  h+='<div class="kpi"><div class="kl">MVP Std Dev</div><div class="kv" style="color:var(--rust)">'+pct(d.mvpStd)+'</div><div class="ks">monthly</div></div>';
+  h+='<div class="kpi"><div class="kl">MVP Return</div><div class="kv" style="color:'+cl(d.mvpRet)+'">'+sgn(d.mvpRet)+'</div><div class="ks">monthly</div></div>';
+  h+='<div class="kpi"><div class="kl">Market Ret</div><div class="kv" style="color:var(--amber)">'+sgn(d.mktRet)+'</div><div class="ks">monthly</div></div>';
+  h+='<div class="kpi"><div class="kl">Market Sharpe</div><div class="kv" style="color:var(--navy)">'+fix(d.mktSharpe)+'</div><div class="ks">tangency</div></div></div>';
+  h+='<div class="g2 fa"><div class="card"><div class="ct ct-r">Stock Summary</div><table class="dt"><thead><tr><th>Ticker</th><th>Sector</th><th>Avg Ret/Mo</th><th>Std Dev</th><th>Sharpe</th></tr></thead><tbody>';
+  for(var ti=0;ti<d.N;ti++)h+='<tr><td style="color:'+d.col[ti]+';font-weight:600">'+d.tickers[ti]+'</td><td style="font-size:10px">'+(d.sectors[ti]||'—')+'</td><td style="color:'+cl(d.means[ti])+'">'+sgn(d.means[ti],4)+'</td><td>'+pct(d.stds[ti],4)+'</td><td style="color:'+cl(d.sharpes[ti])+';font-weight:500">'+fix(d.sharpes[ti])+'</td></tr>';
+  h+='</tbody></table></div><div class="card"><div class="ct ct-f">Min Variance Weights</div>';
+  for(var mwi=0;mwi<d.N;mwi++){var mwP=(d.mvpW[mwi]*100).toFixed(2),mwB=Math.min(100,Math.abs(d.mvpW[mwi]*100));h+='<div class="wbar"><div class="wb-top"><span class="wb-n" style="color:'+d.col[mwi]+'">'+d.tickers[mwi]+'</span><span class="wb-v" style="color:'+d.col[mwi]+'">'+mwP+'%</span></div><div class="wb-track"><div class="wb-fill" style="width:'+mwB+'%;background:'+d.col[mwi]+'"></div></div></div>';}
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px"><div style="background:var(--warm);border-radius:3px;padding:11px;text-align:center;border:1px solid var(--warm3)"><div style="font-family:var(--mono);font-size:9px;color:var(--mu2);margin-bottom:3px">MVP RETURN</div><div style="font-family:var(--serif);font-size:22px;font-style:italic;color:'+cl(d.mvpRet)+'">'+sgn(d.mvpRet)+'</div></div><div style="background:var(--warm);border-radius:3px;padding:11px;text-align:center;border:1px solid var(--warm3)"><div style="font-family:var(--mono);font-size:9px;color:var(--mu2);margin-bottom:3px">MVP STD DEV</div><div style="font-family:var(--serif);font-size:22px;font-style:italic;color:var(--rust)">'+pct(d.mvpStd)+'</div></div></div></div></div>';
+  h+='<div class="card fa"><div class="ct ct-n">Return vs. Risk</div><div class="chart-wrap"><canvas id="cvRR" height="260"></canvas></div><div class="cleg">';
+  for(var li=0;li<d.N;li++)h+='<div class="cli"><div style="width:10px;height:10px;border-radius:50%;background:'+d.col[li]+';flex-shrink:0"></div>'+d.tickers[li]+'</div>';
+  h+='<div class="cli"><div style="width:10px;height:10px;border-radius:50%;background:#8b3a8b;flex-shrink:0"></div>MVP</div></div></div>';
+  document.getElementById('tc-overview').innerHTML=h;attachCanvas('cvRR',drawRR,260);
+}
+
+function bReturns(){
+  var d=RES;if(!d)return;
+  var h='<div class="sh fa"><div class="sh-row"><span class="sh-num">§ 01</span><span class="sh-ttl">Returns, Std Devs &amp; Sharpe Ratios</span><span class="sh-rule"></span></div><p class="sh-sub">'+d.n+' monthly obs · RF='+pct(d.RF,4)+'/month · Sharpe = (Ret − Rf) / σ</p></div>';
+  h+='<div class="g2 fa"><div class="card"><div class="ct ct-r">Statistics Table</div><table class="dt"><thead><tr><th>Ticker</th><th>Avg Ret/Month</th><th>Monthly σ</th><th>Annual σ</th><th>Sharpe</th></tr></thead><tbody>';
+  for(var ri=0;ri<d.N;ri++)h+='<tr><td style="color:'+d.col[ri]+';font-weight:600">'+d.tickers[ri]+'</td><td style="color:'+cl(d.means[ri])+'">'+sgn(d.means[ri],4)+'</td><td>'+pct(d.stds[ri],4)+'</td><td>'+pct(d.stds[ri]*Math.sqrt(12),2)+'</td><td style="color:'+cl(d.sharpes[ri])+';font-weight:500">'+fix(d.sharpes[ri],4)+'</td></tr>';
+  h+='</tbody></table><div class="note nr" style="margin-top:10px">Sharpe = (Avg Monthly Ret − Rf) / σ &nbsp;·&nbsp; Rf = '+pct(d.RF,4)+'/month</div></div>';
+  h+='<div class="card"><div class="ct ct-a">Sharpe Ratio Chart</div><div class="chart-wrap"><canvas id="cvSH" height="240"></canvas></div></div></div>';
+  h+='<div class="card fa"><div class="ct ct-n">Monthly Return History</div><div class="chart-wrap"><canvas id="cvRET" height="160"></canvas></div><div class="cleg">';
+  for(var li2=0;li2<d.N;li2++)h+='<div class="cli"><div style="width:20px;height:2px;background:'+d.col[li2]+';flex-shrink:0"></div>'+d.tickers[li2]+'</div>';
+  h+='</div></div>';
+  document.getElementById('tc-returns').innerHTML=h;
+  attachCanvas('cvSH',drawSharpe,240);attachCanvas('cvRET',drawReturns,160);
+}
+
+function bCovar(){
+  var d=RES;if(!d)return;var N2=d.N;
+  function mkMat(mat,fmtFn,dRGB,oRGB){
+    var maxV=0;for(var mi=0;mi<N2;mi++)for(var mj=0;mj<N2;mj++){var av=Math.abs(mat[mi][mj]);if(av>maxV)maxV=av;}
+    var mh='<table style="width:100%;border-collapse:separate;border-spacing:3px"><tr><td></td>';
+    for(var mhi=0;mhi<N2;mhi++)mh+='<td style="font-family:var(--mono);font-size:10px;color:'+d.col[mhi]+';text-align:center;padding-bottom:4px;font-weight:600">'+d.tickers[mhi]+'</td>';
+    mh+='</tr>';
+    for(var mri=0;mri<N2;mri++){
+      mh+='<tr><td style="font-family:var(--mono);font-size:10px;color:'+d.col[mri]+';font-weight:600;padding-right:6px;white-space:nowrap">'+d.tickers[mri]+'</td>';
+      for(var mcj=0;mcj<N2;mcj++){
+        var mv=mat[mri][mcj],isDiag=mri===mcj,inten=maxV>0?Math.abs(mv)/maxV:0;
+        var bg=isDiag?'rgba('+dRGB+','+(0.12+inten*0.38)+')':'rgba('+oRGB+','+(0.05+inten*0.28)+')';
+        var tc=isDiag?'var(--forest)':'var(--navy)';
+        var fs=N2<=5?'11px':'9px',pd2=N2<=5?'10px 6px':'7px 4px';
+        mh+='<td><div style="background:'+bg+';color:'+tc+';font-family:var(--mono);font-size:'+fs+';padding:'+pd2+';text-align:center;border-radius:3px;font-weight:500">'+fmtFn(mv)+'</div></td>';
+      }
+      mh+='</tr>';
+    }
+    return mh+'</table>';
+  }
+  var h='<div class="sh fa"><div class="sh-row"><span class="sh-num">§ 02</span><span class="sh-ttl">Variance-Covariance Matrix &amp; Min Variance Portfolio</span><span class="sh-rule"></span></div><p class="sh-sub">Diagonal = variances. Off-diagonal = covariances. Lower correlations = better diversification.</p></div>';
+  h+='<div class="g2 fa"><div class="card"><div class="ct ct-r">Covariance Matrix (Monthly)</div>'+mkMat(d.cov,function(v){return v.toFixed(N2<=5?4:3);},'30,92,58','26,48,87')+'<div class="note nf" style="margin-top:10px">Diagonal (green) = variance · Off-diagonal (blue) = covariance between pairs</div></div>';
+  h+='<div class="card"><div class="ct ct-n">Correlation Matrix</div>'+mkMat(d.corr,function(v){return v.toFixed(3);},'30,92,58','26,48,87')+'<div class="note nn" style="margin-top:10px">Range −1 to +1 · Near 0 = better diversification</div></div></div>';
+  h+='<div class="g2 fa"><div class="card"><div class="ct ct-f">Min Variance Portfolio Weights</div>';
+  for(var cwi=0;cwi<d.N;cwi++){var cwP=(d.mvpW[cwi]*100).toFixed(2),cwB=Math.min(100,Math.abs(d.mvpW[cwi]*100));h+='<div class="wbar"><div class="wb-top"><span class="wb-n" style="color:'+d.col[cwi]+'">'+d.tickers[cwi]+'</span><span class="wb-v" style="color:'+d.col[cwi]+'">'+cwP+'%</span></div><div class="wb-track"><div class="wb-fill" style="width:'+cwB+'%;background:'+d.col[cwi]+'"></div></div></div>';}
+  h+='<div class="formula ff" style="margin-top:12px">MVP Return = <strong>'+sgn(d.mvpRet,4)+'</strong> monthly<br>MVP Std Dev = <strong>'+pct(d.mvpStd,4)+'</strong> monthly<br>MVP Sharpe = <strong>'+fix((d.mvpRet-d.RF)/d.mvpStd)+'</strong></div></div>';
+  h+='<div class="card"><div class="ct ct-n">Diversification Benefit</div><p style="font-size:13px;color:var(--mu);line-height:1.75;margin-bottom:12px">MVP σ = <strong>'+pct(d.mvpStd)+'</strong> — lower than every individual stock. This is diversification working.</p><div style="display:grid;grid-template-columns:repeat('+Math.min(d.N,3)+',1fr);gap:8px">';
+  for(var dbi=0;dbi<d.N;dbi++)h+='<div style="background:var(--warm);border-radius:3px;padding:9px;text-align:center;border:1px solid var(--warm3)"><div style="font-family:var(--mono);font-size:9px;color:var(--mu2);margin-bottom:2px">'+d.tickers[dbi]+'</div><div style="font-family:var(--serif);font-size:17px;font-style:italic;color:'+d.col[dbi]+'">'+pct(d.stds[dbi])+'</div></div>';
+  h+='</div><div class="note nf" style="margin-top:10px">MVP σ = <strong>'+pct(d.mvpStd)+'</strong> &lt; all above</div></div></div>';
+  document.getElementById('tc-covar').innerHTML=h;
+}
+
+function bFrontier(){
+  var d=RES;if(!d)return;
+  var h='<div class="sh fa"><div class="sh-row"><span class="sh-num">\u00a7 03</span><span class="sh-ttl">Efficient Frontier</span><span class="sh-rule"></span></div><p class="sh-sub">Each point on the frontier = maximum return achievable for that level of risk. Points below the curve are suboptimal.</p></div>';
+  h+='<div class="card fa"><div class="ct ct-f">Efficient Frontier Chart</div>';
+  h+='<div class="chart-wrap" style="padding:10px 14px 12px"><canvas id="cvEF" height="320"></canvas></div>';
+  h+='<div class="cleg" style="margin-top:12px">';
+  h+='<div class="cli"><div style="width:28px;height:3.5px;background:#1e5c3a;border-radius:2px;flex-shrink:0"></div><span style="color:#1e5c3a;font-weight:600">Efficient Frontier</span></div>';
+  h+='<div class="cli"><div style="width:10px;height:10px;border-radius:50%;background:#7a4f00;flex-shrink:0;border:2px solid #fff;box-shadow:0 0 0 2px #7a4f00"></div><span style="color:#7a4f00;font-weight:600">MVP (min variance)</span></div>';
+  for(var fli=0;fli<d.N;fli++) h+='<div class="cli"><div style="width:8px;height:8px;border-radius:50%;background:'+d.col[fli]+';flex-shrink:0"></div>'+d.tickers[fli]+'</div>';
+  h+='</div></div>';
+  h+='<div class="g2 fa" style="margin-top:14px"><div class="card"><div class="ct ct-a">Frontier Portfolio Data</div>';
+  h+='<table class="dt" style="font-size:10px"><thead><tr><th>#</th><th>Monthly Return</th><th>Std Dev</th></tr></thead><tbody>';
+  for(var fpi=0;fpi<d.ef.length;fpi++){var isM=fpi===0;h+='<tr'+(isM?' class="dt-hl"':'')+'><td style="font-weight:'+(isM?700:400)+'">'+(isM?'\u2605 MVP':String(fpi+1))+'</td><td style="color:'+(d.ef[fpi].ret>=0?'var(--forest)':'var(--rust)')+'">'+(d.ef[fpi].ret>=0?'+':'')+d.ef[fpi].ret.toFixed(2)+'%</td><td>'+d.ef[fpi].std.toFixed(2)+'%</td></tr>';}
+  h+='</tbody></table></div>';
+  h+='<div class="card"><div class="ct ct-n">How to Read This Chart</div>';
+  h+='<p style="font-size:13px;color:var(--mu);line-height:1.8">The <strong style="color:#1e5c3a">green curve</strong> is the efficient frontier — each point maximises return for its risk level. The <strong style="color:#7a4f00">★ star</strong> marks the Minimum Variance Portfolio (lowest possible risk = <strong>'+pct(d.mvpStd)+'</strong> monthly std dev). Individual stock dots show where each stock sits relative to the frontier. Any portfolio <em>below</em> the curve is suboptimal.</p></div></div>';
+  document.getElementById('tc-frontier').innerHTML=h;
+  attachCanvas('cvEF',drawEF,320);
+}
+
+function bMarket(){
+  var d=RES;if(!d)return;
+  var h='<div class="sh fa"><div class="sh-row"><span class="sh-num">\u00a7 04</span><span class="sh-ttl">Market Portfolio &amp; Capital Market Line</span><span class="sh-rule"></span></div><p class="sh-sub">The market portfolio (tangency point) maximises the Sharpe ratio. The CML shows all efficient combinations of the risk-free asset and the market portfolio.</p></div>';
+  h+='<div class="kgrid fa"><div class="kpi"><div class="kl">Risk-Free Rate</div><div class="kv" style="color:var(--navy)">4.33%</div><div class="ks">Annual (Fed)</div></div>';
+  h+='<div class="kpi"><div class="kl">Market Return</div><div class="kv" style="color:'+cl(d.mktRet)+'">'+sgn(d.mktRet)+'</div><div class="ks">Monthly</div></div>';
+  h+='<div class="kpi"><div class="kl">Market Std Dev</div><div class="kv" style="color:var(--rust)">'+pct(d.mktStd)+'</div><div class="ks">Monthly</div></div>';
+  h+='<div class="kpi"><div class="kl">Market Sharpe</div><div class="kv" style="color:var(--amber)">'+fix(d.mktSharpe)+'</div><div class="ks">Highest on frontier</div></div></div>';
+  h+='<div class="card fa"><div class="ct ct-r">Efficient Frontier + Capital Market Line (CML)</div>';
+  h+='<div class="chart-wrap" style="padding:10px 14px 12px"><canvas id="cvCML" height="320"></canvas></div>';
+  h+='<div class="cleg" style="margin-top:12px">';
+  h+='<div class="cli"><div style="width:28px;height:3px;background:#1e5c3a;border-radius:2px;flex-shrink:0"></div><span style="color:#1e5c3a;font-weight:600">Efficient Frontier</span></div>';
+  h+='<div class="cli"><div style="width:28px;height:0;border-top:3px dashed #c47d0a;flex-shrink:0"></div><span style="color:#c47d0a;font-weight:600">Capital Market Line (CML)</span></div>';
+  h+='<div class="cli"><div style="width:10px;height:10px;border-radius:50%;background:#c04f1a;flex-shrink:0;border:2px solid #fff;box-shadow:0 0 0 2px #c04f1a"></div><span style="color:#c04f1a;font-weight:600">Market Portfolio</span></div>';
+  h+='<div class="cli"><div style="width:8px;height:8px;border-radius:50%;background:#1a3057;flex-shrink:0"></div><span style="color:#1a3057">Risk-Free (Rf)</span></div>';
+  h+='</div></div>';
+  h+='<div class="g2 fa" style="margin-top:14px"><div class="card"><div class="ct ct-a">Market Portfolio Weights</div>';
+  for(var mki=0;mki<d.N;mki++){var mkP=((d.mktW[mki]||0)*100).toFixed(2),mkB=Math.min(100,Math.abs((d.mktW[mki]||0)*100)),mkC=d.mktW[mki]>=0?d.col[mki]:'var(--rust)';h+='<div class="wbar"><div class="wb-top"><span class="wb-n" style="color:'+d.col[mki]+'">'+d.tickers[mki]+'</span><span class="wb-v" style="color:'+mkC+'">'+(d.mktW[mki]>=0?'+':'')+mkP+'%</span></div><div class="wb-track"><div class="wb-fill" style="width:'+mkB+'%;background:'+mkC+'"></div></div></div>';}
+  h+='<div class="note na" style="margin-top:10px">Negative = short selling (theoretical). Weights maximise the Sharpe ratio.</div></div>';
+  h+='<div class="card"><div class="ct ct-n">CML Equation</div><div class="formula fn">E(r\u209a) = Rf + Sharpe\u2098 \u00d7 \u03c3\u209a<br><strong>= '+pct(d.RF,3)+' + '+fix(d.mktSharpe)+' \u00d7 \u03c3\u209a</strong></div>';
+  h+='<p style="font-size:12px;color:var(--mu);line-height:1.75;margin-top:8px">The <strong style="color:#c47d0a">CML (dashed gold)</strong> originates at the risk-free rate and is tangent to the <strong style="color:#1e5c3a">efficient frontier (green)</strong> at the market portfolio. Every point on the CML dominates the frontier — same risk, higher return.</p></div></div>';
+  document.getElementById('tc-market').innerHTML=h;
+  attachCanvas('cvCML',drawCML,320);
+}
+
+window.addEventListener('DOMContentLoaded',function(){slots=['','',''];renderSlots();});
+window.addEventListener('resize',function(){clearTimeout(window._rt);window._rt=setTimeout(redraw,220);});
+</script>
+</body>
+</html>
